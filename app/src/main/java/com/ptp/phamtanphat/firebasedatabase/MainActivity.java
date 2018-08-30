@@ -13,11 +13,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.NavigableMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,26 +92,43 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
         //Doc nhieu du lieu ben trong child
-        myRef.child("Nhanvien").addChildEventListener(new ChildEventListener() {
+//        myRef.child("Nhanvien").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Nhanvien nhanvien = dataSnapshot.getValue(Nhanvien.class);
+//                Log.d("BBB",nhanvien.getTen());
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                Nhanvien nhanvien = dataSnapshot.getValue(Nhanvien.class);
+//                Log.d("CCC",nhanvien.getTen());
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+        //Truy van theo tu khoa
+        Query query = myRef.child("Nhanvien").orderByChild("ten").equalTo("Nguyen Van A");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Nhanvien nhanvien = dataSnapshot.getValue(Nhanvien.class);
-                Log.d("BBB",nhanvien.getTen());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                    String value = (String) dataSnapshot1.getValue();
+                    Log.d("BBB",value);
+                }
             }
 
             @Override
@@ -117,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
 
     }
